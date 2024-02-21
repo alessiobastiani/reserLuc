@@ -153,6 +153,8 @@
   color: #0099ff;
   font-size: 9px;
 }
+
+
 .Contenedor-form{
   display: flex;
 align-items: center;
@@ -164,4 +166,10 @@ justify-content: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 25px;
+  gap: 100px;
+}
+
+.crear-reserva{
+  text-align: center;
 }

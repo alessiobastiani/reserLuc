@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import TextField from '@mui/material/TextField'; // Importa TextField de Material-UI
 
 const ReservaForm = ({ onReservaSubmit }) => {
   const [nombre, setNombre] = useState('');
@@ -53,37 +54,42 @@ const ReservaForm = ({ onReservaSubmit }) => {
   return (
     <div>
       {error && <p>{error}</p>}
-      <div className='Contenedor-form'>
-        <h2 className='subtitulo'>Crear Nueva Reserva</h2>
+      <div className='contenedor-total'>
 
-          <div className='entradas'>
-          <label>
-            Nombre:
-            <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-          </label>
-          <label>
-            Cantidad de Personas:
-            <input
-              type="number"
-              value={cantidadPersonas}
-              onChange={(e) => setCantidadPersonas(e.target.value)}
-              />
-          </label>
+        <h2 className='crear-reserva'>Crear Nueva Reserva</h2>
+      <div className='Contenedor-form'>
+        <div className='entradas'>
+
+          <TextField
+            id="nombre"
+            label="Nombre"
+            variant="standard"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            />
+          <TextField
+            id="cantidadPersonas"
+            label="Cantidad de Personas"
+            variant="standard"
+            type="number"
+            value={cantidadPersonas}
+            onChange={(e) => setCantidadPersonas(e.target.value)}
+            />
             </div>
         <form className='formu' onSubmit={handleSubmit}>
-          <label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateCalendar
-                value={fecha ? dayjs(fecha) : null}
-                onChange={(date) => handleDateChange(date)}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+              value={fecha ? dayjs(fecha) : null}
+              onChange={(date) => handleDateChange(date)}
               />
-            </LocalizationProvider>
-          </label>
+          </LocalizationProvider>
           <button type="submit">Guardar Reserva</button>
         </form>
       </div>
+              </div>
     </div>
   );
 };
+
 
 export default ReservaForm;
