@@ -35,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="containere">
       <div className="heading">Ingresar</div>
       <form onSubmit={handleLogin} className="form">
         <input

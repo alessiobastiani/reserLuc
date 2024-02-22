@@ -1,19 +1,16 @@
-import dayjs from 'dayjs';
-import 'dayjs/locale/es'; // Importa la localización de español para Day.js
 import React, { useState, useEffect } from 'react';
 import ReservaForm from "./ReservaForm";
-import ReservaList from "./ReservaList";
 import Logout from './Logout';
+import Targeta from './Targeta';
+import dayjs from 'dayjs';
 
 // Configura la localización en español para Day.js
 dayjs.locale('es');
-
 
 const Home = () => {
   const [ultimaReserva, setUltimaReserva] = useState(null);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
-
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -94,7 +91,6 @@ const Home = () => {
       setError('No se pudo crear la reserva');
     }
   };
-  
 
   const handleEliminar = async (reservaId) => {
     try {
@@ -113,9 +109,6 @@ const Home = () => {
       // Eliminar la reserva del estado de reservas
       setUltimaReserva(null);
       localStorage.removeItem('ultimaReserva');
-  
-      // Opcionalmente, podrías volver a cargar la lista de reservas aquí
-      // fetchUltimaReserva();
   
     } catch (error) {
       console.error('Error al eliminar la reserva:', error);
@@ -139,7 +132,7 @@ const Home = () => {
       </div>
       {error && <p>Error: {error}</p>}
       <ReservaForm onReservaSubmit={handleReservaSubmit} />
-      {ultimaReserva && <ReservaList reservas={[ultimaReserva]} handleEliminar={handleEliminar} />}
+      {ultimaReserva && <Targeta reserva={ultimaReserva} handleEliminar={handleEliminar} />}
       <Logout />
     </div>
   );

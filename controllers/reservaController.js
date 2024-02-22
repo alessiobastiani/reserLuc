@@ -15,13 +15,15 @@ const obtenerReservas = async (req, res) => {
 
 const crearReserva = async (req, res) => {
   try {
-    const { nombre, fecha, cantidadPersonas } = req.body;
+    const { nombre, telefono, fecha, cantidadPersonas, tipoServicio } = req.body;
     const userId = req.user.id;
 
     const reserva = new Reserva({
       nombre,
+      telefono,
       fecha,
       cantidadPersonas,
+      tipoServicio,
       userId: userId,
     });
 
@@ -31,6 +33,7 @@ const crearReserva = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 
 const eliminarReserva = async (req, res) => {
