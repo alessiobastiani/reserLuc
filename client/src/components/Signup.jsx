@@ -1,10 +1,10 @@
-// Signup.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [signupUsername, setSignupUsername] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
+  const [signupEmail, setSignupEmail] = useState(''); // Nuevo estado para el correo electrónico
   const navigate = useNavigate();
 
   const handleSignup = async () => {
@@ -17,6 +17,7 @@ const Signup = () => {
         body: JSON.stringify({
           username: signupUsername,
           password: signupPassword,
+          email: signupEmail, // Incluye el campo de correo electrónico en la solicitud
         }),
       });
   
@@ -58,6 +59,16 @@ const Signup = () => {
             onChange={(e) => setSignupPassword(e.target.value)}
           />
         </label>
+        <br />
+        <label>
+  Email:
+  <input
+    type="email"
+    value={signupEmail}
+    onChange={(e) => setSignupEmail(e.target.value)}
+  />
+</label>
+
         <br />
         <button type="button" onClick={handleSignup}>
           Sign Up

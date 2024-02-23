@@ -1,9 +1,11 @@
 import React from 'react';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import dayjs from 'dayjs';
+import Navbar1 from './Navbar1';
 
-const ReservaCard = ({ reserva, handleEliminar }) => {
+const Targeta = ({ reserva, handleEliminar }) => {
   return (
+    <div>
     <Card className='targetiña' variant="outlined" style={{ backgroundColor: '#f0f0f0' }}>
       <CardContent>
         <Typography variant="h5" component="h2" style={{ color: '#007bff', marginBottom: '10px' }}>
@@ -29,7 +31,8 @@ const ReservaCard = ({ reserva, handleEliminar }) => {
         </Button>
       </CardContent>
     </Card>
+    </div>
   );
 };
 
-export default ReservaCard;
+export default Targeta;

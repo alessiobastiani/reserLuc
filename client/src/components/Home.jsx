@@ -3,6 +3,8 @@ import ReservaForm from "./ReservaForm";
 import Logout from './Logout';
 import Targeta from './Targeta';
 import dayjs from 'dayjs';
+import Navbar1 from './Navbar1';
+
 
 // Configura la localización en español para Day.js
 dayjs.locale('es');
@@ -127,13 +129,11 @@ const Home = () => {
 
   return (
     <div>
+      <Navbar1/>
       <div>
-        <h1 className='titulo'>Bienvenido a reserLuc</h1>
+        <h1 className='titulo'>Bienvenido a reserFlex</h1>
       </div>
-      {error && <p>Error: {error}</p>}
       <ReservaForm onReservaSubmit={handleReservaSubmit} />
-      {ultimaReserva && <Targeta reserva={ultimaReserva} handleEliminar={handleEliminar} />}
-      <Logout />
     </div>
   );
 };
