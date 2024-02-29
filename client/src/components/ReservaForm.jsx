@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import esLocale from 'dayjs/locale/es'; // Importar el locale en español
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'; // Importar DateTimePicker en lugar de DatePicker
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'; 
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -13,9 +12,8 @@ import { Button, Card } from 'react-bootstrap';
 import reserva from "../assets/reserva.jpg";
 import { PDFDownloadLink, Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
 
-// Estilos para el PDF
 const styles = StyleSheet.create({
-  // Estilos omitidos por brevedad...
+  // Estilos para el PDF
 });
 
 const ReservaPDF = ({ reserva }) => (
@@ -36,8 +34,8 @@ const ReservaPDF = ({ reserva }) => (
         </View>
         <View style={styles.separator} />
         <View style={styles.text}>
-          <Text><strong>Fecha y Hora:</strong></Text> {/* Cambiar etiqueta a "Fecha y Hora" */}
-          <Text>{reserva.fecha}</Text>
+          <Text><strong>Fecha y Hora:</strong></Text>
+          <Text>{dayjs(reserva.fecha).format('DD/MM/YYYY HH:mm')}</Text> {/* Formatear la fecha aquí */}
         </View>
         <View style={styles.separator} />
         <View style={styles.text}>
@@ -77,17 +75,17 @@ const ReservaForm = ({ onReservaSubmit }) => {
         setError('La fecha seleccionada no es válida');
         return;
       }
-  
-      const fechaISO = dayjs(fecha).toISOString();
+
       const reservaData = {
         nombre,
         telefono,
-        fecha: fechaISO,
+        fecha, // No es necesario convertir la fecha aquí
         cantidadPersonas: parseInt(cantidadPersonas, 10),
         tipoServicio,
       };
+  
       await onReservaSubmit(reservaData);
-      
+  
       setReservaGuardada(reservaData);
       setNombre('');
       setCantidadPersonas('');
@@ -110,7 +108,7 @@ const ReservaForm = ({ onReservaSubmit }) => {
               <Card.Text>
                 <strong>Nombre:</strong> {reservaGuardada.nombre} <br />
                 <strong>Teléfono:</strong> {reservaGuardada.telefono} <br />
-                <strong>Fecha y Hora:</strong> {dayjs(reservaGuardada.fecha).format('DD/MM/YYYY HH:mm')} <br /> {/* Mostrar la fecha y hora */}
+                <strong>Fecha y Hora:</strong> {dayjs(reservaGuardada.fecha).format('DD/MM/YYYY HH:mm')} <br /> {/* Formatear la fecha aquí */}
                 <strong>Cantidad de Personas:</strong> {reservaGuardada.cantidadPersonas} <br />
                 <strong>Tipo de Servicio:</strong> {reservaGuardada.tipoServicio} <br />
               </Card.Text>
@@ -169,7 +167,7 @@ const ReservaForm = ({ onReservaSubmit }) => {
                   <MenuItem value="Servicio C">Servicio C</MenuItem>
                 </Select>
               </FormControl>
-              <LocalizationProvider dateAdapter={AdapterDayjs} locale={esLocale}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
                   label="Fecha y Hora"
                   value={fecha}

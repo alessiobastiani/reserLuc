@@ -35,7 +35,7 @@ const Login = () => {
 
   return (
     <div className="containere">
-      <div className="heading">Sign In</div>
+      <div className="heading">Ingresar</div>
       <form onSubmit={handleLogin} className="form">
         <input
           required
@@ -57,11 +57,11 @@ const Login = () => {
           value={loginPassword}
           onChange={(e) => setLoginPassword(e.target.value)}
         />
-        <span className="forgot-password"><a href="#">Forgot Password ?</a></span>
-        <input className="login-button" type="submit" value="Sign In" />
+        <span className="forgot-password"><a href="#">olvidaste contraseña?</a></span>
+        <input className="login-button" type="submit" value="aceptar" />
       </form>
       <div className="social-account-container">
-        <span className="title">Or Sign in with</span>
+        <span className="title">Nuestras redes</span>
         <div className="social-accounts">
           <button className="social-button google">
             <svg className="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 488 512">
@@ -80,7 +80,7 @@ const Login = () => {
           </button>
         </div>
       </div>
-      <span className="agreement"><a href="#">Learn user licence agreement</a></span>
+      <span className="agreement"><a href="#">Seguinos para mas informacion</a></span>
       <Link to="/signup" className="deco">
         <span className="agreement">Si no tiene una cuenta REGISTRARSE</span>
       </Link>

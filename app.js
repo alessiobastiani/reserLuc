@@ -10,7 +10,13 @@ const dashboardRouter = require('./routes/dashboard');
 const flash = require('express-flash');
 const ensureAuthenticated = require('./middleware/authMiddleware');
 const debug = require('debug')('app:db');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/Argentina/Buenos_Aires'); // Establecer la zona horaria aquí
 
 console.log("Configuración de depuración de Mongoose ejecutada");
 mongoose.set('debug', (collectionName, method, query, doc) => {

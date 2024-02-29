@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ReservaForm from "./ReservaForm";
-import Logout from './Logout';
-import Targeta from './Targeta';
 import dayjs from 'dayjs';
 import Navbar1 from './Navbar1';
 
