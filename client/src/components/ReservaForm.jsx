@@ -12,8 +12,31 @@ import { Button, Card } from 'react-bootstrap';
 import reserva from "../assets/reserva.jpg";
 import { PDFDownloadLink, Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
 
+// Estilos para el PDF
 const styles = StyleSheet.create({
-  // Estilos para el PDF
+  page: {
+    flexDirection: 'row',
+    backgroundColor: '#E4E4E4'
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1
+  },
+  title: {
+    fontSize: 24,
+    textAlign: 'center',
+    textDecoration: 'underline',
+    marginBottom: 20
+  },
+  text: {
+    fontSize: 16,
+    marginBottom: 10
+  },
+  separator: {
+    borderBottom: '1px solid #000',
+    marginBottom: 10
+  }
 });
 
 const ReservaPDF = ({ reserva }) => (
@@ -21,8 +44,6 @@ const ReservaPDF = ({ reserva }) => (
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
         <Text style={styles.title}>Detalles de la Reserva</Text>
-      </View>
-      <View style={styles.section}>
         <View style={styles.text}>
           <Text><strong>Nombre:</strong></Text>
           <Text>{reserva.nombre}</Text>
@@ -75,11 +96,11 @@ const ReservaForm = ({ onReservaSubmit }) => {
         setError('La fecha seleccionada no es válida');
         return;
       }
-
+  
       const reservaData = {
         nombre,
         telefono,
-        fecha, // No es necesario convertir la fecha aquí
+        fecha: dayjs(fecha).toISOString(), // Convertir a ISOString
         cantidadPersonas: parseInt(cantidadPersonas, 10),
         tipoServicio,
       };
@@ -108,7 +129,7 @@ const ReservaForm = ({ onReservaSubmit }) => {
               <Card.Text>
                 <strong>Nombre:</strong> {reservaGuardada.nombre} <br />
                 <strong>Teléfono:</strong> {reservaGuardada.telefono} <br />
-                <strong>Fecha y Hora:</strong> {dayjs(reservaGuardada.fecha).format('DD/MM/YYYY HH:mm')} <br /> {/* Formatear la fecha aquí */}
+                <strong>Fecha y Hora:</strong> {dayjs(reservaGuardada.fecha).format('DD/MM/YYYY HH:mm')} <br />
                 <strong>Cantidad de Personas:</strong> {reservaGuardada.cantidadPersonas} <br />
                 <strong>Tipo de Servicio:</strong> {reservaGuardada.tipoServicio} <br />
               </Card.Text>

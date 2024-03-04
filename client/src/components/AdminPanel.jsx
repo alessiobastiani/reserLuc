@@ -1,5 +1,6 @@
 // AdminPanel.js
 import React, { useEffect } from 'react';
+import Dashboard from './panel/Dashboard';
 
 const AdminPanel = () => {
   useEffect(() => {
@@ -9,7 +10,7 @@ const AdminPanel = () => {
 
   return (
     <div>
-      <h1>Panel de Administrador</h1>
+      <Dashboard/>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReservaForm from "./ReservaForm";
 import dayjs from 'dayjs';
 import Navbar1 from './Navbar1';
+import CurrentDateTime from './CurrentDateTime';
 
 
 // Configura la localización en español para Day.js
@@ -130,6 +131,9 @@ const Home = () => {
       <Navbar1/>
       <div>
         <h1 className='titulo'>Bienvenido a reserFlex</h1>
+      </div>
+      <div className="text-aling-center">
+      <CurrentDateTime/>
       </div>
       <ReservaForm onReservaSubmit={handleReservaSubmit} />
     </div>

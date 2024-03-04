@@ -5,17 +5,6 @@ import Home from './components/Home';
 import AdminPanel from './components/AdminPanel';
 import Signup from './components/signup';
 import UltimaReservaPage from './components/UltimaReservaPage';
-import dayjs from 'dayjs';
-import 'dayjs/locale/es'; // Importa el locale en español
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-
-// Importa el plugin de zona horaria
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-// Establece la zona horaria predeterminada para toda la aplicación
-dayjs.tz.setDefault('America/Argentina/Buenos_Aires');
 
 const App = () => {
   // Define userId utilizando useState o cualquier otro método

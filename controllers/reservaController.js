@@ -1,5 +1,15 @@
 const Reserva = require('../models/reserva');
 const mongoose = require('mongoose');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
+
+// Importa y configura dayjs con los plugins necesarios
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/Argentina/Buenos_Aires');
+
 
 const obtenerReservas = async (req, res) => {
   try {
@@ -12,16 +22,18 @@ const obtenerReservas = async (req, res) => {
   }
 };
 
-
 const crearReserva = async (req, res) => {
   try {
     const { nombre, telefono, fecha, cantidadPersonas, tipoServicio } = req.body;
     const userId = req.user.id;
 
+    // Convierte la fecha y hora a la zona horaria correcta antes de guardarla en la base de datos
+    const fechaHoraConvertida = dayjs(fecha).tz('America/Argentina/Buenos_Aires');
+
     const reserva = new Reserva({
       nombre,
       telefono,
-      fecha,
+      fecha: fechaHoraConvertida,
       cantidadPersonas,
       tipoServicio,
       userId: userId,
@@ -33,6 +45,7 @@ const crearReserva = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 
 
@@ -106,10 +119,24 @@ const obtenerUltimaReserva = async (req, res) => {
   }
 };
 
+const obtenerReservasHoy = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00 para obtener el inicio del día
+    const reservasHoy = await Reserva.find({ userId, fecha: { $gte: today } }); // Buscar reservas para el día de hoy o más tarde
+    res.json(reservasHoy);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 module.exports = {
   obtenerReservas,
   crearReserva,
   obtenerUltimaReserva,
   actualizarReserva,
-  eliminarReserva
+  eliminarReserva,
+  obtenerReservasHoy
 };

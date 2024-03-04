@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const Login = () => {
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false); // Agrega el estado isAdmin
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -19,19 +20,31 @@ const Login = () => {
           password: loginPassword,
         }),
       });
-
+  
       const data = await response.json();
-
+      console.log('Data from login:', data); // Agrega esta línea
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        navigate(data.redirect === '/api/admin/panel' ? '/admin/panel' : '/inicio');
+        setIsAdmin(data.isAdmin);
+        console.log('isAdmin:', data.isAdmin);
+  
+        // Redirigir al usuario basado en isAdmin
+        if (data.isAdmin) {
+          navigate('/admin/panel');
+        } else {
+          navigate('/inicio');
+        }
       } else {
         console.error('Login failed', data);
       }
+      
     } catch (error) {
       console.error('Error during login', error);
     }
   };
+  
+  
+  
 
   return (
     <div className="containere">

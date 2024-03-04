@@ -53,15 +53,22 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
     }
 
-    // Generar token JWT
-    const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, secretKey, { expiresIn: '1h' });
+    // Configurar isAdmin en true si el usuario es un administrador
+    const isAdmin = user.isAdmin; // O utiliza algún otro atributo que indique si el usuario es un administrador
 
-    // Devolver el token en la respuesta
-    return res.json({ message: 'Inicio de sesión exitoso', token });
+    // Generar token JWT incluyendo isAdmin
+    const token = jwt.sign({ id: user.id, isAdmin }, secretKey, { expiresIn: '1h' });
+
+    // Devolver el token y el estado de administrador en la respuesta
+    return res.json({ message: 'Inicio de sesión exitoso', token, isAdmin });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
 
 const logout = (req, res) => {
   req.logout();

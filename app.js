@@ -13,10 +13,20 @@ const debug = require('debug')('app:db');
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
+process.env.TZ = 'America/Argentina/Buenos_Aires';
+require('dotenv').config();
 
+
+// Importar los plugins de UTC y zona horaria de dayjs
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.tz.setDefault('America/Argentina/Buenos_Aires'); // Establecer la zona horaria aquí
+
+// Configurar la zona horaria para Buenos Aires
+dayjs.tz.setDefault('America/Argentina/Buenos_Aires');
+
+
+console.log('Zona horaria actual:', process.env.TZ);
+
 
 console.log("Configuración de depuración de Mongoose ejecutada");
 mongoose.set('debug', (collectionName, method, query, doc) => {
