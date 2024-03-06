@@ -4,12 +4,10 @@ const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 
-
 // Importa y configura dayjs con los plugins necesarios
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('America/Argentina/Buenos_Aires');
-
 
 const obtenerReservas = async (req, res) => {
   try {
@@ -46,9 +44,6 @@ const crearReserva = async (req, res) => {
   }
 };
 
-
-
-
 const eliminarReserva = async (req, res) => {
   try {
     const { id } = req.params;
@@ -69,7 +64,6 @@ const eliminarReserva = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
 
 const actualizarReserva = async (req, res) => {
   try {
@@ -93,7 +87,6 @@ const actualizarReserva = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
 
 const obtenerUltimaReserva = async (req, res) => {
   try {
@@ -121,10 +114,16 @@ const obtenerUltimaReserva = async (req, res) => {
 
 const obtenerReservasHoy = async (req, res) => {
   try {
-    const userId = req.user.id;
+
+    // Obtener la fecha actual en formato UTC
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00 para obtener el inicio del día
-    const reservasHoy = await Reserva.find({ userId, fecha: { $gte: today } }); // Buscar reservas para el día de hoy o más tarde
+    const offset = -3; // Offset horario para Buenos Aires (UTC-3)
+    const utcToday = new Date(today.getTime() + offset * 60 * 60 * 1000);
+    utcToday.setUTCHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00 en UTC
+    
+    // Buscar todas las reservas para el día de hoy o más tarde (sin filtrar por userId)
+    const reservasHoy = await Reserva.find({ fecha: { $gte: utcToday } });
+    
     res.json(reservasHoy);
   } catch (error) {
     res.status(500).json({ message: error.message });

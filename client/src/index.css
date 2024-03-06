@@ -4,8 +4,6 @@
   box-sizing: border-box;
 }
 
-
-
 .containere {
   display: flex;
   justify-content: center; /* Centrado horizontal */
@@ -24,10 +22,10 @@
 
 
 .heading {
+  color: rgb(16, 137, 211);
   text-align: center;
   font-weight: 900;
-  font-size: 30px;
-  color: rgb(16, 137, 211);
+  font-size: 30px
 }
 
 .form {

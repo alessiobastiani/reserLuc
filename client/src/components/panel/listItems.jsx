@@ -31,7 +31,6 @@ export const mainListItems = (
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Reservas de hoy" />
-      <ReservasHoy />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>

@@ -24,9 +24,7 @@ dayjs.extend(timezone);
 // Configurar la zona horaria para Buenos Aires
 dayjs.tz.setDefault('America/Argentina/Buenos_Aires');
 
-
 console.log('Zona horaria actual:', process.env.TZ);
-
 
 console.log("Configuración de depuración de Mongoose ejecutada");
 mongoose.set('debug', (collectionName, method, query, doc) => {
@@ -69,3 +67,5 @@ app.use('/api/admin', dashboardRouter);
 app.listen(PORT, () => {
   console.log(`Servidor en ejecución en http://localhost:${PORT}`);
 });
+
+
