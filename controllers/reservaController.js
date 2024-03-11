@@ -114,27 +114,43 @@ const obtenerUltimaReserva = async (req, res) => {
 
 const obtenerReservasHoy = async (req, res) => {
   try {
+    // Obtener la fecha actual en la zona horaria de Buenos Aires
+    const today = dayjs().tz('America/Argentina/Buenos_Aires').startOf('day');
+    
+    // Obtener la fecha de mañana en la zona horaria de Buenos Aires
+    const tomorrow = today.add(1, 'day');
 
-    // Obtener la fecha actual en formato UTC
-    const today = new Date();
-    const offset = -3; // Offset horario para Buenos Aires (UTC-3)
-    const utcToday = new Date(today.getTime() + offset * 60 * 60 * 1000);
-    utcToday.setUTCHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00 en UTC
+    // Buscar todas las reservas para el día de hoy (sin filtrar por userId)
+    const reservasHoy = await Reserva.find({ fecha: { $gte: today.toDate(), $lt: tomorrow.toDate() } });
     
-    // Buscar todas las reservas para el día de hoy o más tarde (sin filtrar por userId)
-    const reservasHoy = await Reserva.find({ fecha: { $gte: utcToday } });
-    
-    res.json(reservasHoy);
+    res.json({ reservas: reservasHoy });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+const obtenerUltimasReservas = async (req, res) => {
+  try {
+    // Obtener las últimas 6 reservas ordenadas por fecha de creación descendente
+    const ultimasReservas = await Reserva.find().sort({ createdAt: -1 }).limit(6);
+
+    // Verificar si se encontraron reservas
+    if (!ultimasReservas || ultimasReservas.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron reservas recientes' });
+    }
+
+    // Devolver las últimas 6 reservas encontradas
+    res.json({ reservas: ultimasReservas });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
   obtenerReservas,
   crearReserva,
   obtenerUltimaReserva,
+  obtenerUltimasReservas,
   actualizarReserva,
   eliminarReserva,
   obtenerReservasHoy

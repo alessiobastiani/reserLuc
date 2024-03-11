@@ -11,6 +11,10 @@ import InputLabel from '@mui/material/InputLabel';
 import { Button, Card } from 'react-bootstrap';
 import reserva from "../assets/reserva.jpg";
 import { PDFDownloadLink, Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loading from './Loading';
+import { CheckCircle } from '@mui/icons-material';
 
 // Estilos para el PDF
 const styles = StyleSheet.create({
@@ -82,25 +86,30 @@ const ReservaForm = ({ onReservaSubmit }) => {
   const [tipoServicio, setTipoServicio] = useState('');
   const [error, setError] = useState(null);
   const [reservaGuardada, setReservaGuardada] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     try {
+      setLoading(true);
+  
       if (!nombre || !fecha || !cantidadPersonas) {
         setError('Por favor complete todos los campos');
+        setLoading(false);
         return;
       }
   
       if (fecha === null || !dayjs(fecha).isValid()) {
         setError('La fecha seleccionada no es válida');
+        setLoading(false);
         return;
       }
   
       const reservaData = {
         nombre,
         telefono,
-        fecha: dayjs(fecha).toISOString(), // Convertir a ISOString
+        fecha: dayjs(fecha).toISOString(),
         cantidadPersonas: parseInt(cantidadPersonas, 10),
         tipoServicio,
       };
@@ -112,15 +121,29 @@ const ReservaForm = ({ onReservaSubmit }) => {
       setCantidadPersonas('');
       setFecha(null);
       setError(null);
+      
+      setTimeout(() => {
+        setLoading(false);
+        toast.success('¡Reserva exitosa!', {
+          className: 'custom-toast',
+          bodyClassName: 'custom-toast-body',
+          progressClassName: 'custom-toast-progress',
+          icon: <CheckCircle style={{ color: '#000' }} />
+        });     
+      }, 3000);
     } catch (error) {
       console.error('Error al crear la reserva:', error);
       setError('No se pudo crear la reserva');
+      setLoading(false);
     }
   };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      {reservaGuardada ? (
+          <ToastContainer/>
+      {loading ? (
+        <Loading />
+      ) : reservaGuardada ? (
         <div>
           <Card style={{ width: '23rem', boxShadow:'0px 0px 10px rgba(0, 0, 0, 0.4)' }}>
             <Card.Img variant="top" src={reserva} /> 
@@ -183,9 +206,10 @@ const ReservaForm = ({ onReservaSubmit }) => {
                   label="Tipo de Servicio"
                 >
                   <MenuItem value="">Seleccionar Tipo de Servicio</MenuItem>
-                  <MenuItem value="Servicio A">Servicio A</MenuItem>
-                  <MenuItem value="Servicio B">Servicio B</MenuItem>
-                  <MenuItem value="Servicio C">Servicio C</MenuItem>
+                    <MenuItem value="Desayuno">Desayuno</MenuItem>
+                    <MenuItem value="Almuerzo">Almuerzo</MenuItem>
+                    <MenuItem value="Merienda">Merienda</MenuItem>
+                    <MenuItem value="Cena">Cena</MenuItem>
                 </Select>
               </FormControl>
               <LocalizationProvider dateAdapter={AdapterDayjs}>

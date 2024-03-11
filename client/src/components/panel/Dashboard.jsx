@@ -17,23 +17,17 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import ReservasHoy from './ReservasHoy';
+import { secondaryListItems } from './listItems';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Importar el icono de salida
 
 const drawerWidth = 240;
 
@@ -81,14 +75,65 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
+  const [selectedOption, setSelectedOption] = React.useState('Dashboard');
+  const [latestReservations, setLatestReservations] = React.useState([]);
+
+  React.useEffect(() => {
+    // Aquí puedes hacer una solicitud al servidor para obtener las últimas reservas
+    const fetchLatestReservations = async () => {
+      try {
+        const response = await fetch('/api/latestReservations');
+        const data = await response.json();
+        setLatestReservations(data.reservas);
+      } catch (error) {
+        console.error('Error fetching latest reservations:', error);
+      }
+    };
+
+    fetchLatestReservations();
+  }, []);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/'; // Redirigir al usuario a la página de inicio de sesión
+  };
+
+  let content;
+  if (selectedOption === 'Dashboard') {
+    content = (
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={8} lg={9}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
+            <Chart />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4} lg={3}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
+            <Deposits />
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Orders latestReservations={latestReservations} />
+          </Paper>
+        </Grid>
+      </Grid>
+    );
+  } else if (selectedOption === 'ReservasHoy') {
+    content = <ReservasHoy />;
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -97,7 +142,7 @@ export default function Dashboard() {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: '24px',
             }}
           >
             <IconButton
@@ -119,7 +164,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-                reserFlex
+              reserFlex
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -143,8 +188,26 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
+            {/* Elementos del menú lateral */}
+            <ListItemButton onClick={() => handleOptionClick('Dashboard')}>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleOptionClick('ReservasHoy')}>
+              <ListItemIcon>
+                <ShoppingCartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Reservas de hoy" />
+            </ListItemButton>
+            {/* Botón de cerrar sesión */}
+            <ListItemButton onClick={handleLogout}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Cerrar sesión" />
+            </ListItemButton>
             {secondaryListItems}
           </List>
         </Drawer>
@@ -162,41 +225,7 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Deposits />
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
-                </Paper>
-              </Grid>
-            </Grid>
-            <Copyright sx={{ pt: 4 }} />
+            {content}
           </Container>
         </Box>
       </Box>

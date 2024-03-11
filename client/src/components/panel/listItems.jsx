@@ -1,80 +1,70 @@
-import * as React from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
+import React from 'react';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import ReservasHoy from './ReservasHoy';
-
-const handleLogout = () => {
-  localStorage.removeItem('token'); // Elimina el token del almacenamiento local
-  // Redirige al usuario a la página de inicio de sesión u otra página relevante
-  window.location.href = '/';
-};
-
 
 export const mainListItems = (
-  <React.Fragment>
-    <ListItemButton>
+  <div>
+    <ListItem button>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
-    </ListItemButton>
-    <ListItemButton>
+    </ListItem>
+    <ListItem button>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Reservas de hoy" />
-    </ListItemButton>
-    <ListItemButton>
+    </ListItem>
+    <ListItem button>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Calendario" />
-    </ListItemButton>
-    <ListItemButton>
+    </ListItem>
+    <ListItem button>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Clientes" />
-    </ListItemButton>
-    <ListItemButton>
+      <ListItemText primary="clientes" />
+    </ListItem>
+    <ListItem button>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText primary="Cerrar sesión" onClick={handleLogout} />
-    </ListItemButton>
-  </React.Fragment>
+      <ListItemText primary="cerrar sesion" />
+    </ListItem>
+  </div>
 );
 
 export const secondaryListItems = (
-  <React.Fragment>
-    <ListSubheader component="div" inset>
-      Saved reports
-    </ListSubheader>
-    <ListItemButton>
+  <div>
+    <ListSubheader inset>Saved reports</ListSubheader>
+    <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Current month" />
-    </ListItemButton>
-    <ListItemButton>
+    </ListItem>
+    <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
-    </ListItemButton>
-    <ListItemButton>
+    </ListItem>
+    <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
-    </ListItemButton>
-  </React.Fragment>
+    </ListItem>
+  </div>
 );
