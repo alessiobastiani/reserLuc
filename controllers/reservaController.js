@@ -146,6 +146,57 @@ const obtenerUltimasReservas = async (req, res) => {
   }
 };
 
+const obtenerReservasUltimoMes = async (req, res) => {
+  try {
+    // Obtener la fecha actual en formato UTC
+    const fechaActualUtc = dayjs().utc().toDate();
+
+    // Obtener la fecha de inicio del último mes en formato UTC
+    const fechaInicioMesUtc = dayjs().subtract(1, 'month').startOf('month').utc().toDate();
+    
+    // Obtener la fecha de fin del último mes en formato UTC
+    const fechaFinMesUtc = dayjs(fechaActualUtc).subtract(1, 'day').endOf('month').utc().toDate();
+
+    // Consultar las reservas en el último mes sin filtrar por usuario
+    const reservasUltimoMes = await Reserva.find({ fecha: { $gte: fechaInicioMesUtc, $lte: fechaFinMesUtc } });
+    
+    res.json({ reservas: reservasUltimoMes });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const obtenerCantidadReservas = async (req, res) => {
+  try {
+    const totalReservas = await Reserva.countDocuments();
+    res.json({ totalReservas });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const obtenerReservasPorTipo = async (req, res) => {
+  try {
+    // Obtener todas las reservas
+    const reservas = await Reserva.find();
+    
+    // Inicializar un objeto para almacenar el recuento de cada tipo de reserva
+    const countByType = {};
+    
+    // Contar cuántas reservas hay de cada tipo
+    reservas.forEach((reserva) => {
+      const tipo = reserva.tipoServicio;
+      countByType[tipo] = countByType[tipo] ? countByType[tipo] + 1 : 1;
+    });
+    
+    // Devolver el objeto con el recuento de reservas por tipo
+    res.json(countByType);
+  } catch (error) {
+    console.error('Error al obtener reservas por tipo:', error);
+    res.status(500).json({ message: 'Error al obtener reservas por tipo' });
+  }
+};
+
 module.exports = {
   obtenerReservas,
   crearReserva,
@@ -153,5 +204,8 @@ module.exports = {
   obtenerUltimasReservas,
   actualizarReserva,
   eliminarReserva,
-  obtenerReservasHoy
+  obtenerReservasHoy,
+  obtenerReservasUltimoMes, // Agregar esta función a las exportaciones
+  obtenerCantidadReservas,
+  obtenerReservasPorTipo
 };

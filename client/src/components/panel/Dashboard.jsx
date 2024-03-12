@@ -28,6 +28,7 @@ import Orders from './Orders';
 import ReservasHoy from './ReservasHoy';
 import { secondaryListItems } from './listItems';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Importar el icono de salida
+import ReservationChart from './ReservationChart';
 
 const drawerWidth = 240;
 
@@ -121,12 +122,17 @@ export default function Dashboard() {
         </Grid>
         <Grid item xs={12} md={4} lg={3}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
-            <Deposits />
+            <Deposits/>
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
             <Orders latestReservations={latestReservations} />
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <ReservationChart />
           </Paper>
         </Grid>
       </Grid>
