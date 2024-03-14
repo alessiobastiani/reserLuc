@@ -29,6 +29,9 @@ import ReservasHoy from './ReservasHoy';
 import { secondaryListItems } from './listItems';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // Importar el icono de salida
 import ReservationChart from './ReservationChart';
+import PeopleIcon from '@mui/icons-material/People';
+import ClientCard from './ClientCard';
+import Calendario from './Calendario';
 
 const drawerWidth = 240;
 
@@ -139,6 +142,10 @@ export default function Dashboard() {
     );
   } else if (selectedOption === 'ReservasHoy') {
     content = <ReservasHoy />;
+  }  else if (selectedOption === 'Clientes') {
+    content = <ClientCard />;
+  }else if (selectedOption === 'Calendario') {
+    content = <Calendario />;
   }
 
   return (
@@ -207,7 +214,18 @@ export default function Dashboard() {
               </ListItemIcon>
               <ListItemText primary="Reservas de hoy" />
             </ListItemButton>
-            {/* Botón de cerrar sesión */}
+            <ListItemButton onClick={() => handleOptionClick('Clientes')}>
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Clientes" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleOptionClick('Calendario')}>
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Calendario" />
+            </ListItemButton>
             <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
                 <ExitToAppIcon />

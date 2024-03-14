@@ -610,3 +610,9 @@ justify-content: center;
 .negrita{
   font-weight: bold;
 }
+
+/* Estilos personalizados para FullCalendar */
+.fc-daygrid-day-number {
+  text-decoration: none !important; /* Eliminar subrayado */
+  border-bottom: none !important; /* Eliminar la línea azul */
+}

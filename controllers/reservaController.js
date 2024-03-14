@@ -197,6 +197,15 @@ const obtenerReservasPorTipo = async (req, res) => {
   }
 };
 
+const obtenerTodasReservas = async (req, res) => {
+  try {
+    const reservas = await Reserva.find(); // Obtener todas las reservas sin filtrar
+    res.json({ reservas });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   obtenerReservas,
   crearReserva,
@@ -207,5 +216,6 @@ module.exports = {
   obtenerReservasHoy,
   obtenerReservasUltimoMes, // Agregar esta función a las exportaciones
   obtenerCantidadReservas,
-  obtenerReservasPorTipo
+  obtenerReservasPorTipo,
+  obtenerTodasReservas
 };

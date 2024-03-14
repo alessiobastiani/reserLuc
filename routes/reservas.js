@@ -15,4 +15,7 @@ router.get('/reservas-ultimo-mes', ensureAuthenticated, reservaController.obtene
 router.get('/cantidad-reservas', ensureAuthenticated, reservaController.obtenerCantidadReservas);
 router.get('/reservas-por-tipo', ensureAuthenticated, reservaController.obtenerReservasPorTipo);
 
+// Nueva ruta para obtener todas las reservas
+router.get('/allReservas', ensureAuthenticated, reservaController.obtenerTodasReservas);
+
 module.exports = router;
